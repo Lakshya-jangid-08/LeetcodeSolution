@@ -1,49 +1,37 @@
-// Last updated: 2/4/2026, 10:14:16 am
+// Last updated: 2/4/2026, 10:29:21 am
 1class Solution {
 2public:
 3    int maximumAmount(vector<vector<int>>& coins) {
-4        int n = coins.size();
-5        int m = coins[0].size();
-6        int minVal = -1e9;
+4        int n = coins[0].size();
+5
+6        vector<vector<int>> prev(n + 1, vector<int>(3, -1e7));
 7
-8        vector<vector<int>> prev(m, vector<int>(3, minVal));
-9        prev[0][0] = coins[0][0];
-10
-11        if(coins[0][0] < 0) 
-12            prev[0][1] = 0;
-13
-14        for(int y = 1; y < m; y++) {
-15            for(int cnt = 0; cnt < 3; cnt++) {
-16                int res = minVal;
-17                res = max(res, coins[0][y] + prev[y - 1][cnt]);
-18                if(coins[0][y] < 0 && cnt > 0)
-19                    res = max(res, prev[y - 1][cnt - 1]);
-20                prev[y][cnt] = res;
-21            }
-22        }
-23
-24        for(int x = 1; x < n; x++) {
-25            vector<vector<int>> curr(m, vector<int>(3, minVal));
-26
-27            for(int y = 0; y < m; y++) {
-28                for(int cnt = 0; cnt < 3; cnt++) {
-29
-30                    int res = minVal;
-31                    res = max(res, coins[x][y] + prev[y][cnt]);
-32                    res = max(res, coins[x][y] + (y == 0 ? minVal : curr[y - 1][cnt]));
-33
-34                    // skip negative
-35                    if(coins[x][y] < 0 && cnt > 0) {
-36                        res = max(res, prev[y][cnt - 1]);
-37                        res = max(res, (y == 0 ? minVal : curr[y - 1][cnt - 1]));
-38                    }
-39
-40                    curr[y][cnt] = res;
-41                }
-42            }
-43            prev = curr;
-44        }
-45
-46        return max({prev[m - 1][0], prev[m - 1][1], prev[m - 1][2]});
-47    }
-48};
+8        prev[1][0] = 0;
+9        prev[1][1] = 0;
+10        prev[1][2] = 0;
+11
+12        for(auto &row : coins) {
+13            // curr 
+14
+15            for(int j = 1; j <= n; j++) {
+16                // 0 means no neu.
+17                prev[j][2] = max({
+18                    row[j - 1] + prev[j - 1][2],
+19                    row[j - 1] + prev[j][2],
+20                    prev[j - 1][1],
+21                    prev[j][1],
+22                });
+23                prev[j][1] = max({
+24                    row[j - 1] + prev[j - 1][1],
+25                    row[j - 1] + prev[j][1],
+26                    prev[j - 1][0],
+27                    prev[j][0]
+28                });
+29                prev[j][0] = max(row[j - 1] + prev[j][0], row[j - 1] + prev[j - 1][0]);
+30
+31            }
+32
+33        }
+34        return prev[n][2];
+35    }
+36};
