@@ -1,4 +1,4 @@
-// Last updated: 4/4/2026, 6:05:59 pm
+// Last updated: 4/4/2026, 6:07:19 pm
 1class Node {
 2 public:
 3    int val;
@@ -22,72 +22,77 @@
 21        size = k;
 22        curr = 0;
 23    }
-24    
-25    bool enQueue(int value) {
-26        if(curr == size) return false;
-27        if(curr == 0) {
-28            head = new Node(value);
-29            head->next = head;
-30            head->prev = head;
-31            tail = head;
-32            curr++;
-33            return true;
-34        }
-35
-36        Node* temp = new Node(value);
-37        tail->next = temp;
-38        temp->prev = tail;
-39        temp->next = head;
-40        head->prev = temp;
-41        tail = temp;
-42       
-43        curr++;
-44        return true;
-45    }
-46    
-47    bool deQueue() {
-48        if(curr == 0) return false;
-49        if(curr == 1) {
-50            delete head;
-51            head = tail = nullptr;
-52            curr--;
-53            return true;
-54        }
-55        Node* toDelete = head;
-56        head = head->next;
-57        head->prev = tail;
-58        tail->next = head;
-59        delete toDelete;
-60        curr--;
-61        return true;
-62    }
-63    
-64    int Front() {
-65        if(curr == 0) return -1;
-66        return head->val;
+24    ~MyCircularQueue() {
+25        while (curr > 0) {  
+26            deQueue();
+27        }
+28    }
+29    
+30    bool enQueue(int value) {
+31        if(curr == size) return false;
+32        if(curr == 0) {
+33            head = new Node(value);
+34            head->next = head;
+35            head->prev = head;
+36            tail = head;
+37            curr++;
+38            return true;
+39        }
+40
+41        Node* temp = new Node(value);
+42        tail->next = temp;
+43        temp->prev = tail;
+44        temp->next = head;
+45        head->prev = temp;
+46        tail = temp;
+47       
+48        curr++;
+49        return true;
+50    }
+51    
+52    bool deQueue() {
+53        if(curr == 0) return false;
+54        if(curr == 1) {
+55            delete head;
+56            head = tail = nullptr;
+57            curr--;
+58            return true;
+59        }
+60        Node* toDelete = head;
+61        head = head->next;
+62        head->prev = tail;
+63        tail->next = head;
+64        delete toDelete;
+65        curr--;
+66        return true;
 67    }
 68    
-69    int Rear() {
+69    int Front() {
 70        if(curr == 0) return -1;
-71        return tail->val;
+71        return head->val;
 72    }
 73    
-74    bool isEmpty() {
-75        return curr == 0;
-76    }
-77    
-78    bool isFull() {
-79        return curr == size;
-80    }
-81};
-82
-83/**
-84 * Your MyCircularQueue object will be instantiated and called as such:
-85 * MyCircularQueue* obj = new MyCircularQueue(k);
-86 * bool param_1 = obj->enQueue(value);
-87 * bool param_2 = obj->deQueue();
-88 * int param_3 = obj->Front();
-89 * int param_4 = obj->Rear();
-90 * bool param_5 = obj->isEmpty();
-91 * bool param_6 = obj->isFull();
-92 */
+74    int Rear() {
+75        if(curr == 0) return -1;
+76        return tail->val;
+77    }
+78    
+79    bool isEmpty() {
+80        return curr == 0;
+81    }
+82    
+83    bool isFull() {
+84        return curr == size;
+85    }
+86};
+87
+88/**
+89 * Your MyCircularQueue object will be instantiated and called as such:
+90 * MyCircularQueue* obj = new MyCircularQueue(k);
+91 * bool param_1 = obj->enQueue(value);
+92 * bool param_2 = obj->deQueue();
+93 * int param_3 = obj->Front();
+94 * int param_4 = obj->Rear();
+95 * bool param_5 = obj->isEmpty();
+96 * bool param_6 = obj->isFull();
+97 */
