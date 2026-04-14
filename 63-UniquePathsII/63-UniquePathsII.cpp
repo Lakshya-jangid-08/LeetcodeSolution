@@ -1,17 +1,28 @@
-// Last updated: 4/14/2026, 3:45:21 PM
+// Last updated: 4/14/2026, 3:58:24 PM
 1class Solution {
-2    int solve(int m, int n, vector<vector<int>>& dp, vector<vector<int>>& obstacleGrid) {
-3        if(m < 0 || n < 0 || obstacleGrid[m][n] == 1) return 0;
-4        if(m == 0 && n == 0)    return 1;
-5        if(dp[m][n] != -1)  return dp[m][n];    
-6        return dp[m][n] = solve(m-1,n,dp, obstacleGrid) + solve(m, n-1, dp, obstacleGrid);
-7        
-8    }
-9public:
-10    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
-11        int m = obstacleGrid.size();
-12        int n = obstacleGrid[0].size();
-13        vector<vector<int>> dp(m,vector<int>(n,-1));
-14        return solve(m-1,n-1,dp, obstacleGrid);
-15    }
-16};
+2public:
+3    int uniquePathsWithObstacles(vector<vector<int>>& obstacleGrid) {
+4        int m = obstacleGrid.size();
+5        int n = obstacleGrid[0].size();
+6
+7        vector<int> curr(n), prev(n, 0);
+8
+9        curr[0] = (obstacleGrid[0][0] == 0) ? 1 : 0;
+10
+11        for(int i = 0; i < m; i++) {
+12            for(int j = 0; j < n; j++) {
+13                if(i == 0 && j == 0) continue;
+14                int up  = 0, left = 0;
+15
+16                if(i - 1 >= 0) up = prev[j];
+17                if(j - 1 >= 0) left = curr[j-1];
+18                
+19                if(obstacleGrid[i][j] == 0)
+20                    curr[j] = up + left;
+21                else curr[j] = 0;
+22            }
+23            prev = curr;
+24        }
+25        return prev[n - 1];
+26    }
+27};
