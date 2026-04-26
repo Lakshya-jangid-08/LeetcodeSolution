@@ -1,14 +1,19 @@
-// Last updated: 4/26/2026, 1:22:35 PM
+// Last updated: 4/26/2026, 1:29:09 PM
 1class Solution {
 2public:
-3    vector<int> findDisappearedNumbers(vector<int>& nums) {
-4        int n = nums.size();
-5        vector<int>res;
-6        map<int,int>  freq;
-7        for(int i = 0; i < n; i++) freq[nums[i]] = 1;
-8        for(int i = 1; i <= n; i++) {
-9            if(freq[i] == 0) res.push_back(i);
-10        }
-11        return res;
-12    }
-13};
+3    vector<string> buildArray(vector<int>& target, int n) {
+4        int cnt = 1;
+5        vector<string> res;
+6        for(int i = 0; i < target.size(); i++) {
+7            while(cnt != target[i]) {
+8                res.push_back("Push");
+9                res.push_back("Pop");
+10                cnt++;
+11            } 
+12            res.push_back("Push");
+13            cnt++;
+14        }
+15        return res;
+16
+17    }
+18};
