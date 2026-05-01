@@ -1,19 +1,19 @@
-// Last updated: 4/29/2026, 10:24:17 PM
-class Solution {
-public:
-    vector<int> twoSum(vector<int>& nums, int target)
-    {
-        unordered_map<int, int> map;
-        int needed;
-        for (int i = 0; i < nums.size(); i++)
-        {
-            needed = target - nums[i];
-            if (map.count(needed))
-            {
-                return {map[needed], i};
-            }
-            map[nums[i]] = i;
-        }
-        return {};
-    }
-};
+// Last updated: 5/1/2026, 10:23:24 PM
+1class Solution {
+2public:
+3    vector<int> twoSum(vector<int>& nums, int target)
+4    {
+5        unordered_map<int, int> map;
+6        int needed;
+7        for (int i = 0; i < nums.size(); i++)
+8        {
+9            needed = target - nums[i];
+10            if (map.count(needed))
+11            {
+12                return {map[needed], i};
+13            }
+14            map[nums[i]] = i;
+15        }
+16        return {};
+17    }
+18};
