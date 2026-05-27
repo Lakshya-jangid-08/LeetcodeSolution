@@ -1,4 +1,4 @@
-// Last updated: 5/27/2026, 12:08:12 PM
+// Last updated: 5/27/2026, 12:08:19 PM
 1class Solution {
 2public:
 3    int numberOfSpecialChars(string word) {
