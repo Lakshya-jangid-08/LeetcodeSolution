@@ -1,4 +1,4 @@
-// Last updated: 5/27/2026, 12:07:58 PM
+// Last updated: 5/27/2026, 12:08:12 PM
 1class Solution {
 2public:
 3    int numberOfSpecialChars(string word) {
@@ -14,13 +14,12 @@
 13        int cnt = 0;
 14        for(auto &c : word) {
 15            if(c >= 'A' && c <= 'Z' && lowerIdx[c - 'A'] != -1) {
-16                cout << idx << endl;
-17                if(lowerIdx[c - 'A'] < idx) cnt++;
-18                lowerIdx[c - 'A'] = -1;
-19            }
-20            idx++;
-21        }
-22
-23        return cnt;
-24    }
-25};
+16                if(lowerIdx[c - 'A'] < idx) cnt++;
+17                lowerIdx[c - 'A'] = -1;
+18            }
+19            idx++;
+20        }
+21
+22        return cnt;
+23    }
+24};
