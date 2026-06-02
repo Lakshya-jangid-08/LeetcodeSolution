@@ -1,4 +1,4 @@
-// Last updated: 5/29/2026, 12:24:16 PM
+// Last updated: 6/2/2026, 2:46:17 PM
 1struct Node {
 2    Node* child[26];
 3    bool flg = false;
@@ -28,7 +28,7 @@
 27
 28class Trie {
 29    Node* root;
-30public:
+30 public:
 31    Trie() {
 32        root = new Node();
 33    }
@@ -52,22 +52,44 @@
 51        }
 52        return (node->flg == true);
 53    }
-54    
-55    bool startsWith(string prefix) {
+54
+55    string longestPrefix() {
 56        Node* node = root;
-57        for(int i = 0; i < prefix.length(); i++) {
-58            if(!node->isContainsKey(prefix[i])) return false;
-59            node = node->get(prefix[i]);
-60        }    
-61        return true;
-62    }
-63
-64};
-65
-66/**
-67 * Your Trie object will be instantiated and called as such:
-68 * Trie* obj = new Trie();
-69 * obj->insert(word);
-70 * bool param_2 = obj->search(word);
-71 * bool param_3 = obj->startsWith(prefix);
-72 */
+57        string curr = "";
+58
+59        while(1) {
+60            int cnt = 0;
+61            char c = '0';
+62            for(int i = 0; i < 26; i++) {
+63                if(node->isContainsKey('a' + i)) {
+64                    c = 'a' + i;
+65                    cnt++;
+66                }
+67            }
+68            if(cnt == 1) {
+69                curr.push_back(c);
+70                node = node->get(c);
+71            } 
+72
+73            if(node->flg || cnt != 1) return curr;
+74
+75        }
+76        return curr;
+77    }
+78
+79};
+80
+81class Solution {
+82public:
+83    string longestCommonPrefix(vector<string>& strs) {
+84        Trie* tree = new Trie();
+85
+86        for(auto &s : strs) {
+87            if(s == "") return "";
+88            tree->insert(s);
+89        }
+90
+91        return tree->longestPrefix();
+92
+93    }
+94};
