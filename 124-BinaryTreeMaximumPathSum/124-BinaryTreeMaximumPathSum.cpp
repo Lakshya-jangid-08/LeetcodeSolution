@@ -1,4 +1,4 @@
-// Last updated: 6/3/2026, 9:50:20 AM
+// Last updated: 6/3/2026, 9:50:48 AM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,29 +12,26 @@
 11 */
 12class Solution {
 13public:
-14    unordered_map<TreeNode*, int> dp;
-15    int res = -1e9;
-16
-17    int solve(TreeNode* root) {
-18
-19        if(!root) return 0;
-20
-21        if(dp.contains(root)) return dp[root];
-22
-23        int left = solve(root->left);
-24        left = max(left, 0);
-25        int right = solve(root->right);
-26        right = max(right, 0);
-27
-28        res = max(res, left + root->val + right);
-29
-30        return dp[root] = max(left, right) + root->val;
-31
-32    }
-33
-34    int maxPathSum(TreeNode* root) {
-35        if(!root) return 0;
-36        solve(root);
-37        return res;
-38    }
-39};
+14    int res = -1e9;
+15
+16    int solve(TreeNode* root) {
+17
+18        if(!root) return 0;
+19
+20        int left = solve(root->left);
+21        left = max(left, 0);
+22        int right = solve(root->right);
+23        right = max(right, 0);
+24
+25        res = max(res, left + root->val + right);
+26
+27        return max(left, right) + root->val;
+28
+29    }
+30
+31    int maxPathSum(TreeNode* root) {
+32        if(!root) return 0;
+33        solve(root);
+34        return res;
+35    }
+36};
