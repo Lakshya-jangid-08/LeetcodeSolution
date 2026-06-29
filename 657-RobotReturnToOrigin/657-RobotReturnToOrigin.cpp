@@ -1,0 +1,16 @@
+// Last updated: 6/29/2026, 10:22:27 AM
+class Solution {
+public:
+    bool judgeCircle(string moves) {
+        int x = 0;
+        int y = 0;
+
+        for(auto &c : moves) {
+            if(c == 'U') x -= 1;
+            if(c == 'D') x += 1;
+            if(c == 'L') y -= 1;
+            if(c == 'R') y += 1;
+        }
+        return (x == 0) && (y == 0);
+    }
+};
