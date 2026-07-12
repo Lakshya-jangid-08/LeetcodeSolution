@@ -1,4 +1,4 @@
-// Last updated: 7/12/2026, 12:21:12 PM
+// Last updated: 7/12/2026, 12:21:30 PM
 1
 2struct node {
 3    long long weight;
@@ -59,18 +59,19 @@
 58            return false;
 59        };
 60
-61
-62        int res = -1;
-63        while(mxw >= mnw) {
-64            int mid = (mxw) - (mxw - mnw) / 2;
-65            if(isPos(mid)) {
-66                mnw = mid + 1;
-67                res = mid;
-68            } else {
-69                mxw = mid - 1;
-70            }
-71        }
-72
-73        return res;
-74    }
-75};
+61        if(!isPos(0)) return -1;
+62
+63        int res = -1;
+64        while(mxw >= mnw) {
+65            int mid = (mxw) - (mxw - mnw) / 2;
+66            if(isPos(mid)) {
+67                mnw = mid + 1;
+68                res = mid;
+69            } else {
+70                mxw = mid - 1;
+71            }
+72        }
+73
+74        return res;
+75    }
+76};
