@@ -1,4 +1,4 @@
-// Last updated: 7/22/2026, 11:27:36 AM
+// Last updated: 7/22/2026, 11:28:46 AM
 1class SegmentTree {
 2    vector<int> tree;
 3    int n;
