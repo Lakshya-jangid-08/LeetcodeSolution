@@ -1,4 +1,4 @@
-// Last updated: 7/24/2026, 11:38:54 AM
+// Last updated: 7/24/2026, 12:00:20 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -9,51 +9,56 @@
 8 * };
 9 */
 10class Solution {
-11    unordered_map<TreeNode*, int> mp;
-12    int find (TreeNode* root, TreeNode* target) {
-13        if(!root) return -1;
-14        if(root == target) {
-15            mp[root] = 0;
-16            return 0;
-17        }
-18
-19        int l = find(root->left, target);
-20        int r = find(root->right, target);
-21
-22        if(l != -1) {
-23            mp[root] = l + 1;
-24            l += 1;
-25        } else if(r != -1) {
-26            mp[root] = r + 1;
-27            r += 1;
-28        }
-29        return max(r, l);
-30    }
-31public:
-32
-33    void solve(TreeNode* root, TreeNode* target, int k, vector<int> &res) {
-34        if(!root) return;
-35
-36        int num = -1;
-37        if(mp.count(root)) num = mp[root];
-38        if(num == k) res.push_back(root->val);
+11    unordered_map< TreeNode*, TreeNode*> par;
+12
+13    void findPar(auto root) {
+14        if(!root) return;
+15        queue<TreeNode*> tq;
+16        tq.push(root);
+17        
+18        auto insert = [&](auto node, auto parent) -> void {
+19            if(!node) return;
+20            tq.push(node); par[node] = parent;
+21        };
+22
+23        while(tq.empty() == 0) {
+24            auto node = tq.front(); tq.pop();
+25            insert(node->left, node);
+26            insert(node->right, node);
+27        }
+28    }
+29
+30public:
+31    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
+32        findPar(root);
+33
+34        unordered_map<TreeNode*, bool> vis;
+35        queue<TreeNode*> q;
+36        q.push(target);
+37        vis[target] = true;
+38        int dist = 0;
 39
-40        if(root->left) {
-41            if(num != -1 && mp.count(root->left) == 0) mp[root->left] =  num + 1;
-42            solve(root->left, target, k, res);
-43        }
-44        if(root->right) {
-45            if(num != -1 && mp.count(root->right) == 0) mp[root->right] =  num + 1;
-46            solve(root->right, target, k, res);
-47        }
-48        return;
-49    }
-50
-51    vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
-52        find(root, target);
-53        vector<int> res;
-54        solve(root, target, k, res);
-55        return res;      
-56    }
-57};
-58
+40        auto insert = [&](auto node) -> void {
+41            if(!node || vis.count(node)) return;
+42            q.push(node); vis[node] = true;
+43        };
+44
+45        while(!q.empty() && dist < k) {
+46            int len = q.size();
+47            while(len--) {
+48                auto node = q.front(); q.pop();
+49                insert(node->left);
+50                insert(node->right);
+51                insert(par[node]);
+52            }
+53            dist += 1;
+54        }
+55
+56        vector<int> res;
+57        while(!q.empty()) {
+58            int val = q.front()->val; q.pop();
+59            res.push_back(val);
+60        }
+61        return res;
+62    }
+63};
