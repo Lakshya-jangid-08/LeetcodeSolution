@@ -1,4 +1,4 @@
-// Last updated: 7/24/2026, 2:40:52 PM
+// Last updated: 7/24/2026, 2:41:37 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,7 +12,7 @@
 11public:
 12    int idx;
 13
-14    void solve(TreeNode* root, string &s) {
+14    void solve(TreeNode* &root, string &s) {
 15        if (!root) {
 16            s += "#,";
 17            return;
@@ -25,7 +25,7 @@
 24        solve(root->right, s);
 25    }
 26
-27    string serialize(TreeNode* root) {
+27    string serialize(TreeNode* &root) {
 28        string res;
 29        solve(root, res);
 30        return res;
