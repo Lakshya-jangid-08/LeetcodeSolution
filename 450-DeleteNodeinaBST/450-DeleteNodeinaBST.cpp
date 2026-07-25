@@ -1,4 +1,4 @@
-// Last updated: 7/25/2026, 9:39:10 AM
+// Last updated: 7/25/2026, 9:49:40 AM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -11,25 +11,38 @@
 10 * };
 11 */
 12class Solution {
-13public:
-14    TreeNode* deleteNode(TreeNode* &root, int key) {
-15        if(!root) return root;
-16        if(root->val == key) {
-17            auto rightSubTree = root->right;
-18            if(!rightSubTree) return root->left;
-19            auto temp = root->right;
-20            while(temp && temp->left) {
-21                temp = temp->left;
-22            }
-23            if(root->left)
-24                temp->left = root->left;
-25            root = rightSubTree;
-26            return root;
-27        }
-28        else if(root->val > key) 
-29            root->left = deleteNode(root->left, key);
-30        else if(root->val < key) 
-31            root->right = deleteNode(root->right, key);
-32        return root;
-33    }
-34};
+13    TreeNode * findMin(TreeNode * root){
+14        while(root->left!=NULL){
+15            root=root->left;
+16        }
+17        return root;
+18    }
+19public:
+20    TreeNode* deleteNode(TreeNode* root, int key) {
+21        if(!root) return nullptr;
+22        else if(root->val < key) {
+23            root->right = deleteNode(root->right, key);
+24        }
+25        else if(root->val > key) {
+26            root->left = deleteNode(root->left, key);
+27        } else {
+28            if(!root->left && !root->right) {
+29                delete root;
+30                return nullptr;
+31            } else if(!root->right) {
+32                TreeNode* res = root->left;
+33                delete root;
+34                return res;
+35            } else if(!root->left) {
+36                TreeNode* res = root->right;
+37                delete root;
+38                return res;
+39            }
+40
+41            TreeNode* rightMin = findMin(root->right); 
+42            root->val = rightMin->val;
+43            root->right = deleteNode(root->right, rightMin->val);
+44        }
+45        return root;
+46    }
+47};
