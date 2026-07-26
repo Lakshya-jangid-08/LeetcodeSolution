@@ -1,14 +1,36 @@
-// Last updated: 7/26/2026, 10:48:14 AM
-1class Solution {
-2public:
-3    int maximumProduct(vector<int>& nums) {
-4        sort(nums.begin(), nums.end());
-5        int n = nums.size();
-6        return max({
-7            nums[0] * nums[1] * nums[2],
-8            nums[0] * nums[1] * nums[n - 1],
-9            nums[0] * nums[n - 2] * nums[n - 1],
-10            nums[n - 3] * nums[n - 2] * nums[n - 1]
-11        });
-12    }
-13};
+// Last updated: 7/26/2026, 10:48:39 AM
+class Solution {
+public:
+    int maximumProduct(vector<int>& nums) {
+        int firstMax = INT_MIN;
+        int secondMax = INT_MIN;
+        int thirdMax = INT_MIN;
+
+        int firstMin = INT_MAX;
+        int secondMin = INT_MAX;
+
+        int n = nums.size();
+        for(int i = 0 ; i<n ; i++){
+            if(nums[i] >= firstMax){
+                thirdMax = secondMax;
+                secondMax = firstMax;
+                firstMax = nums[i];
+            }
+            else if(nums[i] >= secondMax){
+                thirdMax = secondMax;
+                secondMax = nums[i];
+            }
+            else if(nums[i] > thirdMax)thirdMax = nums[i];
+            if(nums[i] <= firstMin){
+                secondMin = firstMin;
+                firstMin = nums[i];
+            }
+            else if(nums[i] < secondMin){
+                secondMin = nums[i];
+            }
+        }
+        int a = firstMax*secondMax*thirdMax;
+        int b = firstMax*firstMin*secondMin;
+        return max(a , b);
+    }
+};
