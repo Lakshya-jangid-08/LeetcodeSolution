@@ -1,33 +1,38 @@
-// Last updated: 7/26/2026, 4:32:45 PM
+// Last updated: 7/26/2026, 4:39:47 PM
 1class Solution {
 2public:
 3    vector<vector<int>> permuteUnique(vector<int>& nums) {
-4        set<vector<int>> s;
-5        int n = nums.size();
+4        int n = nums.size();
+5        sort(nums.begin(), nums.end());
 6        vector<int> vis(n, 0);
 7        vector<int> vec;
-8
-9        auto solve = [&](auto &&self, int idx) {
-10            vec.push_back(nums[idx]);
-11            vis[idx] = 1;
-12           
-13            if(vec.size() == n) {
-14                s.insert(vec);
-15                vis[idx] = 0;
-16                vec.pop_back();
-17                return;
-18            }
-19            for(int i = 0; i < n; i++) {
-20                if(vis[i]) continue;
-21                self(self, i);
-22            }
-23           
-24            vis[idx] = 0;
-25            vec.pop_back();
-26        };
-27        for(int i = 0; i < n; i++) solve(solve, i);
-28        vector<vector<int>> res(s.begin(), s.end());
-29
-30        return res;
-31    }
-32};
+8        vector<vector<int>> res;
+9
+10        auto solve = [&](auto &&self, int idx) {
+11            vec.push_back(nums[idx]);
+12            vis[idx] = 1;
+13           
+14            if(vec.size() == n) {
+15                res.push_back(vec);
+16                vis[idx] = 0;
+17                vec.pop_back();
+18                return;
+19            }
+20
+21            for(int i = 0; i < n; i++) {
+22                if (i > 0 && nums[i] == nums[i - 1] && !vis[i - 1]) continue;
+23                if(vis[i]) continue;
+24                self(self, i);
+25            }
+26           
+27            vis[idx] = 0;
+28            vec.pop_back();
+29        };
+30
+31        for(int i = 0; i < n; i++) {
+32            if (i > 0 && nums[i] == nums[i - 1]) continue; 
+33            solve(solve, i);
+34        }
+35        return res;
+36    }
+37};
