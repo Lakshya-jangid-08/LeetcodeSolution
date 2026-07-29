@@ -1,4 +1,4 @@
-// Last updated: 7/29/2026, 11:48:35 AM
+// Last updated: 7/29/2026, 12:16:57 PM
 1class Solution {
 2public:
 3    int maxSumTwoNoOverlap(vector<int>& nums, int firstLen, int secondLen) {
@@ -18,12 +18,12 @@
 17        };
 18
 19        int res = 0;
-20        const auto calc = [&](vector<int> & nums1, int len1, vector<int> & nums2, int len2) {
-21            for(int i = 0; i < n; i++) {
-22                int currIdx = i + len1;
-23                while(currIdx < n) {
-24                    res = max(res, nums1[i] + nums2[currIdx++]); 
-25                }
+20
+21        auto calc = [&](vector<int>& A, int lenA, vector<int>& B, int lenB) {
+22            int best = 0;
+23            for (int i = lenA; i < B.size(); i++) {
+24                best = max(best, A[i - lenA]);
+25                res = max(res, best + B[i]);
 26            }
 27        };
 28
