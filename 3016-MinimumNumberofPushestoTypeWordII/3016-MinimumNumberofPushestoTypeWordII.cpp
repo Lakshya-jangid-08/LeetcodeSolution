@@ -1,18 +1,21 @@
-// Last updated: 7/30/2026, 3:11:20 PM
-1class Solution {
-2public:
-3    int minimumPushes(string word) {
-4        vector<int> freq(26, 0);
-5        for (char c : word) {
-6            freq[c - 'a']++;
-7        }
-8        sort(freq.rbegin(),freq.rend());
-9        
-10        int cost = 0;
-11        for(int i = 0 ;i < 26; i++) {
-12            int push = (i/8)+1;
-13            cost += freq[i]*push;
-14        }
-15        return cost;
-16    }
-17};
+// Last updated: 7/30/2026, 3:11:38 PM
+class Solution {
+public:
+    int minimumPushes(string word)
+    {
+        vector<int> freq(26, 0);
+        for (char c : word)
+        {
+            freq[c - 'a']++;
+        }
+        sort(freq.rbegin(),freq.rend());
+        int total = 0;
+        for(int i=0;i<26;i++)
+        {
+            // if (freq[i] == 0) break;
+            int push = (i/8)+1;
+            total += freq[i]*push;
+        }
+        return total;
+    }
+};
