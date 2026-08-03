@@ -1,4 +1,4 @@
-// Last updated: 8/3/2026, 8:44:35 PM
+// Last updated: 8/3/2026, 8:44:47 PM
 1class Solution {
 2public:
 3    string stoneGameIII(vector<int>& stoneValue) {
@@ -20,8 +20,7 @@
 19        };
 20
 21        int val = solution(solution, 0);
-22        cout << val << endl;
-23        return val > 0 ? "Alice" : (val < 0 ? "Bob" : "Tie"); 
-24
-25    }
-26};
+22        return val > 0 ? "Alice" : (val < 0 ? "Bob" : "Tie"); 
+23
+24    }
+25};
