@@ -1,46 +1,17 @@
-// Last updated: 4/4/2026, 10:29:00 am
-// class Solution {
-// public:
-//     int lengthOfLongestSubstring(string s) {
-        
-//         if(s.size()==0)return 0;
-//         int ans=0, count=0;
-//         int left=0, right=0;
-//         int freq[128]={0};
-
-//         while(right<s.size())
-//         {
-//             if(freq[s[right]]==1)
-//             {
-//                 freq[s[left]]--;
-//                 left++;
-//                 count--;
-//             }
-//             else
-//             {
-//                 freq[s[right]]++;
-//                 right++;
-//                 count++;
-//             } 
-//             ans = max(count,ans);
-//         }
-
-//         return ans;
-//     }
-// };
-class Solution {
-public:
-    int lengthOfLongestSubstring(string s) {
-        vector<int> last(128, -1); // last seen index
-        int l = 0, ans = 0;
-
-        for (int r = 0; r < s.size(); r++) {
-            if (last[s[r]] >= l) {
-                l = last[s[r]] + 1; // shrink window
-            }
-            last[s[r]] = r;
-            ans = max(ans, r - l + 1);
-        }
-        return ans;
-    }
-};
+// Last updated: 8/5/2026, 5:11:00 PM
+1class Solution {
+2public:
+3    int lengthOfLongestSubstring(string s) {
+4        vector<int> lastSeen(128, -1);
+5        int l = 0, r = 0;
+6        int ans = 0;
+7        for(int r = 0; r < s.length(); r++) {
+8            int ls = lastSeen[s[r]];
+9            l = max(l, ls + 1);
+10
+11            lastSeen[s[r]] = r;
+12            ans = max(r - l + 1, ans);
+13        }
+14        return ans;
+15    }
+16};
