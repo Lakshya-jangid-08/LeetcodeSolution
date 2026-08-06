@@ -1,4 +1,4 @@
-// Last updated: 8/6/2026, 1:18:59 PM
+// Last updated: 8/6/2026, 1:19:40 PM
 1class Solution {
 2public:
 3    Node* cloneGraph(Node* node) {
@@ -17,8 +17,8 @@
 16
 17            for (Node* x : n->neighbors) {
 18                Node* child = nullptr;
-19                self(self, x, child);
-20                r->neighbors.push_back(child);
+19                r->neighbors.push_back(child);
+20                self(self, x, r->neighbors.back());
 21            }
 22        };
 23
