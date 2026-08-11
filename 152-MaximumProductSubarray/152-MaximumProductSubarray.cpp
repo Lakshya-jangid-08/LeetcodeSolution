@@ -1,34 +1,25 @@
-// Last updated: 8/4/2026, 1:56:38 am
+// Last updated: 8/11/2026, 4:44:57 PM
 1class Solution {
 2public:
-3    vector<pair<int,int>> dp; // {maxProd, minProd}
-4
-5    pair<int,int> solve(vector<int>& nums, int i) {
-6        if (i == 0) return {nums[0], nums[0]};
-7
-8        if (dp[i].first != INT_MIN) return dp[i];
-9
-10        auto prev = solve(nums, i - 1);
-11
-12        int curr = nums[i];
-13
-14        int mx = max({curr, curr * prev.first, curr * prev.second});
-15        int mn = min({curr, curr * prev.first, curr * prev.second});
-16
-17        return dp[i] = {mx, mn};
-18    }
-19
-20    int maxProduct(vector<int>& nums) {
-21        int n = nums.size();
-22        dp.resize(n, {INT_MIN, INT_MIN});
-23
-24        int ans = nums[0];
-25
-26        for (int i = 0; i < n; i++) {
-27            auto res = solve(nums, i);
-28            ans = max(ans, res.first);
-29        }
-30
-31        return ans;
-32    }
-33};
+3    int maxProduct(vector<int>& nums) {
+4        int res = INT_MIN, temp = 0;
+5        for(int i = 0; i < nums.size(); i++)  {
+6            temp *= nums[i];
+7            if(temp == 0) {
+8                temp = nums[i];
+9            }
+10            res = max(res, temp);
+11        }
+12        temp = 0;
+13        for(int i = nums.size() - 1; i >= 0; i--)  {
+14            temp *= nums[i];
+15            if(temp == 0) {
+16                temp = nums[i];
+17            }
+18            res = max(res, temp);
+19        }
+20
+21
+22        return res;
+23    }
+24};
