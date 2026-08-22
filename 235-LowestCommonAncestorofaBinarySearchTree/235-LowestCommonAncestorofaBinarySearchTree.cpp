@@ -1,4 +1,4 @@
-// Last updated: 8/22/2026, 9:52:51 AM
+// Last updated: 8/22/2026, 9:53:49 AM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -70,7 +70,7 @@
 69    TreeNode* commonAncestor(TreeNode* p, TreeNode* q) {
 70        if (p == q)
 71            return p;
-72            
+72
 73        for(int i = col - 1; i >= 0; i--) {
 74            if(parent[p][i] != parent[q][i]) {
 75                p = parent[p][i];
@@ -90,6 +90,8 @@
 89        tree->build();
 90
 91        tree->makeDepthEqual(p, q);
-92        return tree->commonAncestor(p, q);
-93    }
-94};
+92        root = tree->commonAncestor(p, q);
+93        delete tree;
+94        return root;
+95    }
+96};
