@@ -1,23 +1,20 @@
-// Last updated: 8/22/2026, 2:15:26 PM
+// Last updated: 8/22/2026, 2:57:17 PM
 1class Solution {
-2
-3    int res = 0;
-4    pair<int, int> solve(TreeNode* root) {
-5        if(!root) return {0 ,0};
-6
-7        auto L = solve(root->left);
-8        auto R = solve(root->right);
-9
-10        int l = 1 + L.second;
-11        int r = 1 + R.first;
-12        res = max({res, l, r});
-13
-14        return {l , r};
-15    }
-16
-17public:
-18    int longestZigZag(TreeNode* root) {
-19        auto [l, r] = solve(root);        
-20        return res - 1;
-21    }
-22};
+2public:
+3    int minFlips(int a, int b, int c) {
+4        
+5        int count = 0;
+6        for(int i = 0; i <= 31; i++) {
+7            int c_bit = (c & (1 << i)) ? 1 : 0;
+8            int a_bit = (a & (1 << i)) ? 1 : 0;
+9            int b_bit = (b & (1 << i)) ? 1 : 0;
+10
+11            if((a_bit | b_bit) == c_bit) continue;
+12            if(c_bit == 1) count++;
+13            else {
+14                count += a_bit + b_bit;
+15            }
+16        }
+17        return count;
+18    }
+19};
