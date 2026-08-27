@@ -1,4 +1,4 @@
-// Last updated: 6/3/2026, 9:50:48 AM
+// Last updated: 8/27/2026, 11:07:13 PM
 1/**
 2 * Definition for a binary tree node.
 3 * struct TreeNode {
@@ -12,26 +12,29 @@
 11 */
 12class Solution {
 13public:
-14    int res = -1e9;
-15
-16    int solve(TreeNode* root) {
-17
-18        if(!root) return 0;
+14    pair<int, int> solve(TreeNode* root) {
+15        if(!root) {
+16            // no path sum so inf, and one line sum is also 0
+17            return {-1e8, -1e8};
+18        }
 19
-20        int left = solve(root->left);
-21        left = max(left, 0);
-22        int right = solve(root->right);
-23        right = max(right, 0);
-24
-25        res = max(res, left + root->val + right);
-26
-27        return max(left, right) + root->val;
-28
-29    }
-30
-31    int maxPathSum(TreeNode* root) {
-32        if(!root) return 0;
-33        solve(root);
-34        return res;
-35    }
-36};
+20        auto [l_linearSum, l_pathSum] = solve(root->left);
+21        auto [r_linearSum, r_pathSum] = solve(root->right);
+22
+23        return {
+24            max({l_linearSum + root->val, r_linearSum + root->val, root->val}),
+25            max({ 
+26                l_linearSum + root->val + r_linearSum,
+27                r_pathSum,
+28                l_pathSum,
+29                l_linearSum,
+30                r_linearSum
+31            })
+32        };
+33    }
+34
+35    int maxPathSum(TreeNode* root) {
+36        auto [linearSum, pathSum] = solve(root);
+37        return max(linearSum, pathSum);
+38    }
+39};
