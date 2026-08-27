@@ -1,62 +1,35 @@
-// Last updated: 8/27/2026, 11:56:36 PM
-1class DisjointSet {
-2
-3    vector<int> parent;
-4    vector<int> size;
-5    public :
-6    DisjointSet(int n) {
-7        parent.resize(n, 0);
-8        size.resize(n, 0);
-9        iota(parent.begin(), parent.end(), 0);
-10    }
+// Last updated: 8/28/2026, 12:27:45 AM
+1class Solution {
+2public:
+3    int networkDelayTime(vector<vector<int>>& times, int n, int k) {
+4        vector<vector<pair<int, int>>> adj(n + 1);
+5
+6        for(int i = 0; i < times.size(); i++) {
+7            int u = times[i][0], v = times[i][1], w = times[i][2];
+8            adj[u].push_back({v, w});
+9        }
+10
 11
-12    int findPar(int x) {
-13        if(parent[x] == x) return x;
-14        return parent[x] = findPar(parent[x]); 
-15    }
-16
-17    bool join(int u, int v) {
-18        int pu = findPar(u);
-19        int pv = findPar(v);
-20
-21        if (pu == pv) return false;
-22
-23        if (size[pu] < size[pv]) {
-24            parent[pu] = pv;
-25            size[pv] += size[pu];
-26        } else {
-27            parent[pv] = pu;
-28            size[pu] += size[pv];
-29        }
-30        return true;
-31    }
+12
+13        priority_queue<pair<int, int>, vector<pair<int, int>> , greater<pair<int, int>>> q;
+14
+15        q.push({0, k});
+16        int maxCost = 0;
+17        unordered_set<int> ust;
+18
+19        while(!q.empty()) {
+20            int len = q.size();
+21            while(len--) {
+22                auto [cost, u] = q.top(); q.pop();
+23                if(ust.find(u) != ust.end()) continue;
+24                maxCost = max(maxCost, cost);
+25                ust.insert(u);
+26                for(auto &[v, w] : adj[u]) {
+27                    q.push({cost + w, v});
+28                }
+29            }
+30        }
+31        return (ust.size() == n) ? maxCost : -1; 
 32
-33};
-34
-35class Solution {
-36public:
-37    int minCostConnectPoints(vector<vector<int>>& points) {
-38        vector<vector<int>> distances;
-39
-40        for(int i = 0; i < points.size(); i++) {
-41            for(int j =  i + 1; j < points.size(); j++) {
-42
-43                int d = abs(points[i][0] - points[j][0]) + abs(points[i][1] - points[j][1]);
-44                distances.push_back({i, j, d});
-45            }   
-46        }
-47
-48
-49        sort(distances.begin(), distances.end(), [](auto &d1, auto &d2) {
-50            return d1[2] < d2[2];
-51        });
-52        int n = distances.size();
-53        DisjointSet dsu(points.size() + 1);
-54        int cost = 0;
-55        for(int i = 0; i < n; i++) {
-56            int u = distances[i][0], v = distances[i][1], w = distances[i][2];
-57            if(dsu.join(u, v)) cost += w;
-58        }
-59        return cost;
-60    }
-61};
+33    }
+34};
