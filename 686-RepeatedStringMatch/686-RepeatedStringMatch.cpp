@@ -1,26 +1,48 @@
-// Last updated: 9/4/2026, 2:07:54 AM
+// Last updated: 9/4/2026, 9:29:42 AM
 1class Solution {
 2public:
-3    int repeatedStringMatch(string a, string b) {
-4        int n = a.length(), m = b.length();
-5        if(!m) return 0;
-6        int ans = 1e8;
-7        for(int i = 0; i < n; i++) {
-8            if(a[i] == b[0]) {
-9                int count = 0;
-10                int k = i, j = 0;
-11                while(j < m && a[k] == b[j]) {
-12                    k = (k + 1) % n;
-13                    j += 1;
-14                    count += (k == 0 && j < m) ? 1 : 0; 
-15                }
-16                if(j == m) {
-17                    ans = min(ans, 1 + count);
-18                }
-19            }
-20        }
-21        if(ans == 1e8) return -1;
-22        return ans;
-23
-24    }
-25};
+3    const int BASE = 100000;
+4    int repeatedStringMatch(string A, string B) {
+5        int n = A.length(), m = B.length();
+6
+7        if(n == 0 || m == 0) return -1;
+8
+9        string source = A;
+10        int repeat = 1;
+11        while(source.length() < m) {
+12            source += A;
+13            repeat += 1;
+14        }
+15
+16        const auto Rabin_Krap_Algo = [&](string & source) -> bool {
+17            n = source.length();
+18            string & target = B;
+19            int power = 1;
+20            int targetCode = 0;
+21            for(int i = 0; i < m; i++) {
+22                targetCode = (target[i] + targetCode * 31) % BASE;
+23                power = (power * 31) % BASE;
+24            }
+25
+26            int hashCode = 0;
+27            for(int i = 0; i < n; i++) {
+28                hashCode = (hashCode * 31 + source[i]) % BASE;
+29                if(i < m - 1) 
+30                    continue;
+31                if(i >= m)
+32                    hashCode = (hashCode - source[i - m] * power) % BASE;
+33                if(hashCode < 0) 
+34                    hashCode += BASE;
+35                if(hashCode == targetCode) 
+36                    if(source.substr(i - m + 1, m) == target) 
+37                        return true;
+38            }
+39            return false;
+40        };
+41
+42        if(Rabin_Krap_Algo(source)) return repeat;
+43        source += A;
+44        if(Rabin_Krap_Algo(source)) return repeat + 1;
+45        return -1;
+46    }
+47};
