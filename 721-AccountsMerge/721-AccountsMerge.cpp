@@ -1,4 +1,4 @@
-// Last updated: 9/6/2026, 8:59:15 PM
+// Last updated: 9/6/2026, 9:11:41 PM
 1class unionSet {
 2 public:
 3    vector<int> par, size;
@@ -30,42 +30,39 @@
 29public:
 30    vector<vector<string>> accountsMerge(vector<vector<string>>& accounts) {
 31        int n = accounts.size();
-32        int uniqueId = n + 1;
-33
-34        unordered_map< string, int> mailMp;
-35        unordered_map< int, string> ownerMp;
-36        int uid = 0;
-37        
-38        unionSet dsu(1e5);
-39
-40        for(auto &acc : accounts) {
-41            ownerMp[uid] = acc[0];
-42            for(int i = 1; i < acc.size(); i++) {
-43                if(mailMp.count(acc[i]) == 0) {
-44                    mailMp[acc[i]] = uniqueId;
-45                    uniqueId += 1;
-46                }
-47                int &mid = mailMp[acc[i]];
-48                dsu.join(uid, mid);
-49            }
-50            uid++;
-51        }
-52
-53        vector<vector<string>> res;
-54        unordered_map<int, vector<string>> mp;
-55        
-56        for(auto &[mail, id] : mailMp) {
-57            int parent = dsu.findPar(id);
-58            mp[parent].push_back(mail);
-59        }
-60
+32
+33        unordered_map< string, int> mailMp;
+34        
+35        unionSet dsu(n + 1);
+36
+37        int uid = 0;
+38        for(auto &acc : accounts) {
+39            for(int i = 1; i < acc.size(); i++) {
+40                if(mailMp.count(acc[i]) == 0) {
+41                    mailMp[acc[i]] = uid;
+42                }
+43                int &mid = mailMp[acc[i]];
+44                dsu.join(uid, mid);
+45            }
+46            uid++;
+47        }
+48
+49        vector<vector<string>> res;
+50        vector<string> mp[n];
+51        
+52        for(auto &[mail, id] : mailMp) {
+53            int parent = dsu.findPar(id);
+54            mp[parent].push_back(mail);
+55        }
+56
+57
+58        for(int i = 0; i < n; i++) {
+59            if(mp[i].size() == 0) continue;
+60            res.push_back({accounts[i][0]});
 61
-62        for(auto &[parent, arr] : mp) {
-63            res.push_back({ownerMp[parent]});
-64
-65            sort(arr.begin(), arr.end());
-66            for(auto &v : arr) res.back().push_back(v);
-67        }
-68        return res;
-69    }
-70};
+62            sort(mp[i].begin(), mp[i].end());
+63            for(auto &v : mp[i]) res.back().push_back(v);
+64        }
+65        return res;
+66    }
+67};
