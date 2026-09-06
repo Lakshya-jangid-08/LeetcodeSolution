@@ -1,23 +1,19 @@
-// Last updated: 6/29/2026, 10:23:36 AM
-class Solution {
-public:
-    vector<vector<int>> subsets(vector<int>& nums) {
-        
-        int n = nums.size();
-        vector<vector<int>> res;
-
-        res.push_back({});
-        set<vector<int>> s;
-        for(int mask = 1; mask < (1 << n); mask++) {
-            vector<int> t;
-            for(int i = 0; i < n; i++) {
-                if(mask & (1 << i)) {
-                    t.push_back(nums[i]);
-                }
-            }
-            if(s.find(t) != s.end()) continue;
-            res.push_back(t);
-        }
-        return res;
-    }
-};
+// Last updated: 9/6/2026, 5:49:27 PM
+1class Solution {
+2public:
+3    vector<vector<int>> subsets(vector<int>& nums) {
+4        
+5        int n = nums.size();
+6        vector<vector<int>> res;
+7
+8        for(int mask = 0; mask < (1 << n); mask++) {
+9            res.push_back({});
+10            for(int i = 0; i < n; i++) {
+11                if(mask & (1 << i))
+12                    res.back().push_back(nums[i]);
+13            }
+14        }
+15
+16        return res; 
+17    }
+18};
